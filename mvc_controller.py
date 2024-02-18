@@ -9,7 +9,7 @@ class CalculatorController:
         # Bind view events to controller methods
         self.view.keypad.bind('<Button-1>', self.handle_keypad_press)
 
-    # from cal_ui.py
+    # from mvc_view.py
     # def handle_keypad_press(self, event_or_key):
     #     if isinstance(event_or_key, str):
     #         key = event_or_key
