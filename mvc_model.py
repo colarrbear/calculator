@@ -55,3 +55,12 @@ class CalculatorModel:
         if self.current_expression == "":
             self.current_expression = "0"
         return self.current_expression
+
+    # def clear_display(self):
+    #     self.display.configure(state='normal')
+    #     self.display.delete('1.0', tk.END)
+    #     self.display.configure(state='disabled')
+    #     self.set_display_colour("black")
+
+    def clear_expression(self):
+        self.expression = ""

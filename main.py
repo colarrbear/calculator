@@ -6,12 +6,13 @@
 #     ui = CalculatorUI()
 #     ui.run()
 
-from mvc_view import CalculatorUI
+from mvc_view import CalculatorView
 from mvc_controller import CalculatorController
 from mvc_model import CalculatorModel
 
 if __name__ == '__main__':
-    model = CalculatorModel()
-    view = CalculatorUI()
-    controller = CalculatorController(model, view)
-    view.run()
+    # model = CalculatorModel()
+    # view = CalculatorView()
+    # controller = CalculatorController(model, view)
+    controller = CalculatorController()
+    controller.run()
