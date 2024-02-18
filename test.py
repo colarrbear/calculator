@@ -18,25 +18,23 @@ class CalculatorUI(tk.Tk):
         self.display.tag_configure("right", justify="right")
         self.display.grid(row=0, column=0, columnspan=4, sticky='news')
 
-        ttk.Label(self, text="Function:").grid(row=1, column=0, sticky='w')
-
         combobox_function = self.make_combobox_function()
-        combobox_function.grid(row=1, column=1, columnspan=3, sticky='news')
+        combobox_function.grid(row=0, column=0, rowspan=2, columnspan=2, sticky='news')  # Span across row 0 and row 1
 
         self.keypad = Keypad(self,
                              keynames=['7', '8', '9', '4', '5', '6', '1', '2',
                                        '3', ' ', '0', '.'], columns=3)
-        self.keypad.grid(row=2, column=0, sticky='news')
-
+        self.keypad.grid(row=2, column=0, sticky='news')  # Move keypad to row 2
 
         operator_pad = self.make_operator_pad()
-        operator_pad.grid(row=2, column=1, sticky='news')
+        operator_pad.grid(row=2, column=1, sticky='news')  # Move operator pad to row 2
 
         command_pad = self.make_command_pad()
-        command_pad.grid(row=2, column=2, sticky='news')  # Adjusted row to 1
+        command_pad.grid(row=2, column=2, sticky='news')  # Move command pad to row 2
 
         self.rowconfigure(0, weight=1)  # row 0 is the display
-        self.rowconfigure(1, weight=1)  # row 1 is the keypad, operators, and commands
+        self.rowconfigure(1, weight=1)  # row 1 is the combobox
+        self.rowconfigure(2, weight=1)  # row 2 is the keypad, operators, and commands
 
         self.columnconfigure(0, weight=1)  # column 0 is the keypad and combobox
         self.columnconfigure(1, weight=1)  # column 1 is the operators
@@ -49,7 +47,6 @@ class CalculatorUI(tk.Tk):
         function = ttk.Combobox(self, textvariable=function_var)
         function['values'] = ('exp', 'ln', 'log10', 'log2', 'sqrt', 'sin', 'cos', 'tan')
         return function
-        # function.grid(row=1, column=0, sticky='news')
 
     def make_operator_pad(self) -> tk.Frame:
         frame_operators = tk.Frame(self)
@@ -69,7 +66,7 @@ class CalculatorUI(tk.Tk):
             button.grid(row=row, column=col, rowspan=rowspan, sticky='nsew',
                         **options)
 
-        frame_operators.grid(row=1, column=1, sticky='news')  # Fix here: grid the frame, not the button
+        frame_operators.grid(row=2, column=1, sticky='news')  # Fix here: grid the frame, not the button
 
         for row in range(num_rows):
             frame_operators.rowconfigure(row, weight=1)
@@ -91,15 +88,12 @@ class CalculatorUI(tk.Tk):
             button = Keypad(frame_commands, keynames=[key], columns=1)
             button.grid(row=row, column=col, sticky='nsew', **options)
 
-        frame_commands.grid(row=1, column=2, sticky='news')  # Adjusted row to 1
+        frame_commands.grid(row=2, column=2, sticky='news')  # Fix here: grid the frame, not the button
 
         for row in range(len(commands)):
             frame_commands.rowconfigure(row, weight=1)
-        # frame_commands.rowconfigure(0, weight=1)
-        # frame_commands.rowconfigure(1, weight=1)
-        # frame_commands.rowconfigure(2, weight=1)
 
-        frame_commands.columnconfigure(0, weight=1)  # Fix here: grid the frame, not the button
+        frame_commands.columnconfigure(0, weight=1)
 
         return frame_commands
 
@@ -111,3 +105,7 @@ class CalculatorUI(tk.Tk):
 
     def run(self):
         self.mainloop()
+
+# Instantiate and run the CalculatorUI
+calculator_app = CalculatorUI()
+calculator_app.run()
