@@ -192,6 +192,7 @@ from tkinter import ttk
 from keypad import Keypad
 from mvc_controller import CalculatorController
 
+
 class CalculatorUI(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -210,6 +211,9 @@ class CalculatorUI(tk.Tk):
                              keynames=['7', '8', '9', '4', '5', '6', '1', '2',
                                        '3', ' ', '0', '.'], columns=3)
         self.keypad.grid(row=1, column=0, sticky='news')
+
+        # combobox_function = self.make_combobox_function()
+        # combobox_function.grid(row=0, column=0, sticky='news', columnspan=2)  # Place combobox at top
 
         operator_pad = self.make_operator_pad()
         operator_pad.grid(row=1, column=1, sticky='news')
@@ -239,7 +243,7 @@ class CalculatorUI(tk.Tk):
         options = {'padx': 1, 'pady': 1}
 
         num_col = 2
-        num_rows = len(operator) // num_col + 1
+        num_rows = len(operator) // num_col
 
         for i, key in enumerate(operator):
             row = i % num_rows
@@ -251,14 +255,13 @@ class CalculatorUI(tk.Tk):
             button.grid(row=row, column=col, rowspan=rowspan, sticky='nsew',
                         **options)
 
-        frame_operators.grid(row=1, column=1,
-                             sticky='news')  # Fix here: grid the frame, not the button
+        frame_operators.grid(row=1, column=1, sticky='news')  # Fix here: grid the frame, not the button
 
-        for row in range(len(operator) // num_col + 1):
+        for row in range(num_rows):
             frame_operators.rowconfigure(row, weight=1)
 
-        frame_operators.columnconfigure(0, weight=1)
-        frame_operators.columnconfigure(1, weight=1)
+        for col in range(num_col):
+            frame_operators.columnconfigure(col, weight=1)
 
         return frame_operators
 
@@ -278,8 +281,7 @@ class CalculatorUI(tk.Tk):
         frame_commands.rowconfigure(1, weight=1)
         frame_commands.rowconfigure(2, weight=1)
 
-        frame_commands.columnconfigure(0,
-                                       weight=1)  # Fix here: grid the frame, not the button
+        frame_commands.columnconfigure(0, weight=1)  # Fix here: grid the frame, not the button
 
         return frame_commands
 
@@ -291,7 +293,3 @@ class CalculatorUI(tk.Tk):
 
     def run(self):
         self.mainloop()
-
-# Instantiate and run the CalculatorUI
-calculator_app = CalculatorUI()
-calculator_app.run()
