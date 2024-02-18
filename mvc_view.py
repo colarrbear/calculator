@@ -10,6 +10,9 @@ class CalculatorUI(tk.Tk):
         self.title('Calculator')
         self.display = None
         self.keypad = None
+        self.combobox_function = None
+        self.operator_pad = None
+        # self.controller = controller
         self.init_components()
 
     def init_components(self):
@@ -20,20 +23,21 @@ class CalculatorUI(tk.Tk):
 
         ttk.Label(self, text="Function:").grid(row=1, column=0, sticky='w')
 
-        combobox_function = self.make_combobox_function()
-        combobox_function.grid(row=1, column=1, columnspan=3, sticky='news')
+        self.combobox_function = self.make_combobox_function()
+        self.combobox_function.grid(row=1, column=1, columnspan=3, sticky='news')
 
+        # make keypad in init_components
         self.keypad = Keypad(self,
                              keynames=['7', '8', '9', '4', '5', '6', '1', '2',
                                        '3', ' ', '0', '.'], columns=3)
         self.keypad.grid(row=2, column=0, sticky='news')
 
-
-        operator_pad = self.make_operator_pad()
-        operator_pad.grid(row=2, column=1, sticky='news')
+        self.operator_pad = self.make_operator_pad()
+        self.operator_pad.grid(row=2, column=1, sticky='news')
+        # operator_pad.bind('<Button-1>', lambda event: CalculatorController.handle_operator_button)
 
         command_pad = self.make_command_pad()
-        command_pad.grid(row=2, column=2, sticky='news')  # Adjusted row to 1
+        command_pad.grid(row=2, column=2, sticky='news')
 
         self.rowconfigure(0, weight=1)  # row 0 is the display
         self.rowconfigure(1, weight=1)  # row 1 is the keypad, operators, and commands
@@ -43,41 +47,53 @@ class CalculatorUI(tk.Tk):
         self.columnconfigure(2, weight=1)  # column 2 is the commands
 
         self.keypad.bind('<Button-1>', CalculatorController.handle_keypad_press)
+        self.combobox_function.bind('<<ComboboxSelected>>', CalculatorController.handle_function_combobox)
+        self.operator_pad.bind('<Button-1>', CalculatorController.handle_operator_button)
 
-    def make_combobox_function(self):
-        function_var = tk.StringVar()
-        function = ttk.Combobox(self, textvariable=function_var)
-        function['values'] = ('exp', 'ln', 'log10', 'log2', 'sqrt', 'sin', 'cos', 'tan')
-        return function
-        # function.grid(row=1, column=0, sticky='news')
+    # def make_keypad(self) -> tk.Frame:
+    #     frame_operators = tk.Frame(self)
+    #
+    #     num_rows = 4
+    #     num_col = 3
+    #
+    #     for row in range(num_rows):
+    #         frame_operators.rowconfigure(row, weight=1)
+    #
+    #     for col in range(num_col):
+    #         frame_operators.columnconfigure(col, weight=1)
+    #
+    #     return frame_operators
 
     def make_operator_pad(self) -> tk.Frame:
         frame_operators = tk.Frame(self)
         operator = ['*', '/', '+', '-', '^', '(', ')', 'mod']
         options = {'padx': 1, 'pady': 1}
 
-        num_col = 2
-        num_rows = len(operator) // num_col
+        num_cols = 2
+        num_rows = len(operator) // num_cols
 
         for i, key in enumerate(operator):
             row = i % num_rows
             col = i // num_rows
 
-            rowspan = 2 if key == '=' else 1
-
             button = Keypad(frame_operators, keynames=[key], columns=1)
-            button.grid(row=row, column=col, rowspan=rowspan, sticky='nsew',
-                        **options)
+            button.grid(row=row, column=col, sticky='nsew', **options)
 
-        frame_operators.grid(row=1, column=1, sticky='news')  # Fix here: grid the frame, not the button
+        frame_operators.grid(row=1, column=1, sticky='news')
 
         for row in range(num_rows):
             frame_operators.rowconfigure(row, weight=1)
 
-        for col in range(num_col):
+        for col in range(num_cols):
             frame_operators.columnconfigure(col, weight=1)
 
         return frame_operators
+
+    def make_combobox_function(self):
+        function_var = tk.StringVar()
+        function = ttk.Combobox(self, textvariable=function_var)
+        function['values'] = ('exp', 'ln', 'log10', 'log2', 'sqrt', 'sin', 'cos', 'tan')
+        return function
 
     def make_command_pad(self) -> tk.Frame:
         frame_commands = tk.Frame(self)
@@ -91,15 +107,12 @@ class CalculatorUI(tk.Tk):
             button = Keypad(frame_commands, keynames=[key], columns=1)
             button.grid(row=row, column=col, sticky='nsew', **options)
 
-        frame_commands.grid(row=1, column=2, sticky='news')  # Adjusted row to 1
+        frame_commands.grid(row=1, column=2, sticky='news')
 
         for row in range(len(commands)):
             frame_commands.rowconfigure(row, weight=1)
-        # frame_commands.rowconfigure(0, weight=1)
-        # frame_commands.rowconfigure(1, weight=1)
-        # frame_commands.rowconfigure(2, weight=1)
 
-        frame_commands.columnconfigure(0, weight=1)  # Fix here: grid the frame, not the button
+        frame_commands.columnconfigure(0, weight=1)
 
         return frame_commands
 
