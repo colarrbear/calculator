@@ -20,7 +20,7 @@ class CalculatorModel:
     def evaluate_expression(self):
         try:
             current = self.current_expression
-            result = eval(current.replace('^', '**'))
+            result = eval(current.replace('^', '**').replace('ln','math.log'))
             self.stack.append((self.current_expression, result))
             return str(result)
         except ZeroDivisionError:

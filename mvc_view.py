@@ -1,7 +1,5 @@
 import tkinter as tk
 from tkinter import ttk
-# from keypad import Keypad
-# from mvc_controller import CalculatorController
 
 
 class CalculatorView(tk.Tk):
@@ -86,7 +84,7 @@ class CalculatorView(tk.Tk):
 
     def update_combobox_display(self, event):
         operator = self.combobox_function.get()
-        print('op', operator)
+        # print('op', operator)
         current_expression = self.display.get('1.0', tk.END).strip()
 
         if current_expression == "":
@@ -102,34 +100,6 @@ class CalculatorView(tk.Tk):
 
         self.combobox_function.set("")  # Reset the combobox selection
 
-        # Set display color to default
-        # self.set_display_colour('lightblue')
-    # def update_combobox_display(self, event):
-    #     operator = self.combobox_function.get()
-    #     print('op', operator)
-    #     if self.display.get('1.0', tk.END) == "":
-    #         self.display.set(self.combobox_function.get() + '(')
-    #     else:
-    #         if self.display.get('1.0', tk.END)[-1:] in self.controller.model.operator:
-    #             self.display.set(self.combobox_function.get() + '(' + self.display.get('1.0', tk.END) + ')')
-    #         else:
-    #             self.display.set(self.combobox_function.get() + '(' + self.display.get('1.0', tk.END) + ')')
-        # old code
-        # operator = self.combo_value.get()
-        # print('op', operator)
-        # if self.text_result.get() == "":
-        #     self.text_result.set(self.combo_value.get() + '(')
-        # else:
-        #     if self.text_result.get()[-1:] in self.operator_list:
-        #         self.text_result.set(
-        #             self.text_result.get() + self.combo_value.get() + '(')
-        #     else:
-        #         self.text_result.set(
-        #             self.combo_value.get() + '(' + self.text_result.get() + ')')
-
-        # selected_function = self.combobox_function.get()
-        # self.controller.handler_keypad_press(selected_function)
-
     def make_command_pad(self) -> tk.Frame:
         frame_commands = tk.Frame(self)
         commands = ['CLR', 'DEL', '=']
@@ -139,8 +109,6 @@ class CalculatorView(tk.Tk):
             row = i
             col = 0
 
-            # button = Keypad(frame_commands, keynames=[key], columns=1)
-            # button.grid(row=row, column=col, sticky='nsew', **options)
             button = tk.Button(frame_commands, text=key, command=lambda
                 cmd=key: self.controller.handler_keypad_press(cmd))
             button.grid(row=row, column=col, sticky='nsew', **options)
@@ -174,7 +142,7 @@ class CalculatorView(tk.Tk):
         self.display.configure(state='normal')
         self.display.delete('1.0', tk.END)
         self.display.configure(state='disabled')
-        # self.background = 'pink'
+        self.change_text_colour('black')
         self.set_display_colour('lightblue')
 
     def run(self):

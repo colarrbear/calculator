@@ -9,12 +9,11 @@ class CalculatorController:
         self.view = CalculatorView(self)
 
     def handler_keypad_press(self, value):
-        # print('value:', value)
         if value == '=':
-            print('2')
-            print(self.view.display.get(1.0, "end-1c"))
+            # print('2')
+            # print(self.view.display.get(1.0, "end-1c"))
             result = self.evaluate_expression(self.view.display.get(1.0, "end-1c"))
-            print(result)
+            # print(result)
             if result != "Error":
                 self.model.stack.append((self.model.current_expression, result))
                 self.view.clear_display()
@@ -67,11 +66,10 @@ class CalculatorController:
         self.view.clear_display()
 
     def evaluate_expression(self, txt):
-        print('dooo')
         try:
             # current = self.model.current_expression
-            result = eval(txt.replace('^', '**').replace('mod', '%'))
-            print('result:', result)
+            result = eval(txt.replace('^', '**').replace('mod', '%').replace('ln','log'))
+            # print('result:', result)
             self.model.stack.append((self.model.current_expression, result))
             return str(result)
         except ZeroDivisionError:
@@ -105,12 +103,12 @@ class CalculatorController:
         last_char = self.model.current_expression[-1] if self.model.current_expression else ''
         # print('last char:', last_char)
         if last_char.isdigit() or last_char == ')':
-            print(value)
+            # print(value)
             if value == 'exp':
                 self.model.current_expression += '*' + 'math.exp' + '('
             elif value == 'ln':
                 self.model.current_expression += 'math.log' + '('
-                print('current expression:', self.model.current_expression)
+                # print('current expression:', self.model.current_expression)
             elif value == 'log10':
                 self.model.current_expression += '*' + 'math.log10' + '('
             elif value == 'log2':
