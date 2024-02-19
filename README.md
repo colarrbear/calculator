@@ -1,3 +1,3 @@
 # calculator
 
-![uml_mvc](https://github.com/colarrbear/calculator/assets/113860728/19ac326e-01f1-4d1b-b2f6-318e07cf6e31)
+![uml_mvc-2](https://github.com/colarrbear/calculator/assets/113860728/268ce73c-8f2a-4081-895b-9ac62931cea1)
