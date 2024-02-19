@@ -10,56 +10,8 @@ class CalculatorView(tk.Tk):
         self.history = tk.StringVar()
         self.init_components()
 
-    # def init_components(self):
-    #     self.display = tk.Text(self, height=2, state='disabled',
-    #                            font=('Sarabun', 16), padx=12, pady=12,
-    #                            bg='lightblue')
-    #     self.display.tag_configure("right", justify="right")
-    #     self.display.grid(row=1, column=0, columnspan=4, sticky='news')
-    #
-    #     ttk.Label(self, text="Function:").grid(row=2, column=0, sticky='news')
-    #
-    #     self.combobox_function = self.make_combobox_function()
-    #     self.combobox_function.grid(row=2, column=2, columnspan=1,
-    #                                 sticky='news')
-    #     self.combobox_function.current(0)
-    #     self.combobox_function.bind("<<ComboboxSelected>>",
-    #                                 self.update_combobox_display)
-    #
-    #     self.keypad = self.make_keypad()
-    #     self.operator_pad = self.make_operator_pad()
-    #     self.command_pad = self.make_command_pad()
-    #     self.history_label = self.create_history()
-    #
-    #     self.history_label.grid(row=0, column=0, columnspan=4, sticky='news')
-    #     self.keypad.grid(row=3, column=0, sticky='news')
-    #     self.operator_pad.grid(row=3, column=1, sticky='news')
-    #     self.command_pad.grid(row=3, column=2, sticky='news')
-    #
-    #     # try line 39-46
-    #     self.history_listbox = tk.Listbox(self, font=('Sarabun', 12),
-    #                                       selectmode=tk.SINGLE, width=40, height=5)
-    #     self.history_listbox.grid(row=2, column=0, columnspan=4, sticky='news')
-    #     self.history_listbox.bind('<Button-1>',self.recall_history_entry)
-    #
-    #     self.rowconfigure(2, weight=1)
-    #     #
-    #
-    #     self.rowconfigure(0, weight=1)
-    #     self.rowconfigure(1, weight=1)
-    #     self.rowconfigure(2, weight=1)
-    #     self.rowconfigure(3, weight=1)
-    #
-    #     self.columnconfigure(0, weight=1)
-    #     self.columnconfigure(1, weight=1)
-    #
-    #     self.rowconfigure(0, weight=1)
-    #     self.rowconfigure(1, weight=1)
-    #     self.rowconfigure(2, weight=1)
     def init_components(self):
-        # try line 39-46
         self.history_label = self.create_history()
-        # self.history_label.grid(row=0, column=0, columnspan=4, sticky='news')
         self.history_listbox = tk.Listbox(self, font=('Sarabun', 12),
                                           selectmode=tk.SINGLE, width=40,
                                           height=5)
@@ -67,7 +19,7 @@ class CalculatorView(tk.Tk):
         self.history_listbox.bind('<Button-1>', self.recall_history_entry)
 
         self.rowconfigure(2, weight=1)
-        #
+
         self.display = tk.Text(self, height=2, state='disabled',
                                font=('Sarabun', 16), padx=12, pady=12,
                                bg='lightblue')
