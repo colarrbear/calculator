@@ -42,7 +42,7 @@ class CalculatorView(tk.Tk):
         keys = list('789456123 0.')
         for i, key in enumerate(keys):
             button = tk.Button(frame, text=key, command=lambda
-                k=key: self.controller.handler_press(k))
+                k=key: self.controller.handler_keypad_press(k))
             button.grid(row=i // 3, column=i % 3, padx=2, pady=2,
                         sticky="nsew")
             frame.grid_columnconfigure(i % 3, weight=1)
@@ -62,7 +62,7 @@ class CalculatorView(tk.Tk):
             row = i % num_rows
             col = i // num_rows
 
-            button = tk.Button(frame_operators, text=key, command=lambda op=key: self.controller.handler_press(op))
+            button = tk.Button(frame_operators, text=key, command=lambda op=key: self.controller.handler_keypad_press(op))
             button.grid(row=row, column=col, sticky='nsew', **options)
 
         frame_operators.grid(row=1, column=1, sticky='news')
@@ -84,7 +84,7 @@ class CalculatorView(tk.Tk):
 
     def update_combobox_display(self, event):
         selected_function = self.combobox_function.get()
-        self.controller.handler_press(selected_function)
+        self.controller.handler_keypad_press(selected_function)
 
     def make_command_pad(self) -> tk.Frame:
         frame_commands = tk.Frame(self)
@@ -98,7 +98,7 @@ class CalculatorView(tk.Tk):
             # button = Keypad(frame_commands, keynames=[key], columns=1)
             # button.grid(row=row, column=col, sticky='nsew', **options)
             button = tk.Button(frame_commands, text=key, command=lambda
-                cmd=key: self.controller.handler_press(cmd))
+                cmd=key: self.controller.handler_keypad_press(cmd))
             button.grid(row=row, column=col, sticky='nsew', **options)
         frame_commands.grid(row=1, column=2, sticky='news')
 

@@ -2,13 +2,14 @@ from mvc_model import CalculatorModel
 from mvc_view import CalculatorView
 import math
 
+
 class CalculatorController:
     def __init__(self):
         self.model = CalculatorModel()
         self.view = CalculatorView(self)
 
-    def handler_press(self, value):
-        print('value:', value)
+    def handler_keypad_press(self, value):
+        # print('value:', value)
         if value == '=':
             result = self.model.evaluate_expression()
             if result != "Error":
@@ -81,7 +82,7 @@ class CalculatorController:
 
     def handle_function(self, value):
         last_char = self.model.current_expression[-1] if self.model.current_expression else ''
-        print('last char:', last_char)
+        # print('last char:', last_char)
         if last_char.isdigit() or last_char == ')':
             print(value)
             if value == 'exp':
@@ -135,4 +136,3 @@ class CalculatorController:
 
     def run(self):
         self.view.mainloop()
-
