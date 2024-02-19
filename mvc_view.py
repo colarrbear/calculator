@@ -79,7 +79,12 @@ class CalculatorView(tk.Tk):
         function_var = tk.StringVar()
         function = ttk.Combobox(self, textvariable=function_var)
         function['values'] = ('exp', 'ln', 'log10', 'log2', 'sqrt', 'sin', 'cos', 'tan')
+        function.bind("<<ComboboxSelected>>", self.update_combobox_display)
         return function
+
+    def update_combobox_display(self, event):
+        selected_function = self.combobox_function.get()
+        self.controller.handler_press(selected_function)
 
     def make_command_pad(self) -> tk.Frame:
         frame_commands = tk.Frame(self)
