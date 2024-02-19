@@ -37,18 +37,6 @@ class CalculatorView(tk.Tk):
         self.columnconfigure(1, weight=1)  # column 1 is the operators
         self.columnconfigure(2, weight=1)  # column 2 is the commands
 
-    # def make_keypad(self):
-    #     # try command
-    #     frame = tk.Frame(self)
-    #     keys = list('789456123 0.')
-    #     for i, key in enumerate(keys):
-    #         button = Keypad(frame, keynames=[key], columns=3, command=lambda k=key: self.controller.handler_press(k))
-    #         button.grid(row=i // 3, column=i % 3, padx=2, pady=2, sticky='news')
-    #         frame.grid_columnconfigure(i % 3, weight=1)
-    #         frame.grid_rowconfigure(i // 3, weight=1)
-    #         button.grid(sticky='news')
-    #     return frame
-
     def make_keypad(self):
         frame = tk.Frame(self)
         keys = list('789456123 0.')
