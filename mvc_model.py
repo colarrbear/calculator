@@ -9,6 +9,7 @@ class CalculatorModel:
 
     def add_to_history(self, expression, result):
         self.stack.append((expression, result))
+        print(self.stack)
 
 
     # def append_digit(self, digit):

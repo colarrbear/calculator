@@ -15,15 +15,11 @@ class CalculatorController:
             result = self.evaluate_expression(self.view.display.get(1.0, "end-1c"))
             # print(result)
             if result != "Error":
-                # self.model.stack.append((self.model.current_expression, result))
-                # self.model.add_to_history('', '')
                 self.view.clear_display()
-                # print('value:', value)
-                # self.model.add_to_history(self.model.current_expression, result)
                 self.view.update_display(result)
-
-                self.model.clear()
-                # self.model.add_to_history(self.model.current_expression, value)
+                history = self.model.get_history()[-1]
+                self.view.update_history(history)
+                # self.model.clear()
             else:
                 # foreground need to be fix
                 self.view.change_text_colour('red')

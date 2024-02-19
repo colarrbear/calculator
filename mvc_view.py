@@ -7,13 +7,14 @@ class CalculatorView(tk.Tk):
         super().__init__()
         self.title('Calculator')
         self.controller = controller
+        self.history = tk.StringVar()
         self.init_components()
 
     def init_components(self):
         self.display = tk.Text(self, height=2, state='disabled',
                                font=('Sarabun', 16), padx=12, pady=12, bg='lightblue')
         self.display.tag_configure("right", justify="right")
-        self.display.grid(row=1, column=1, columnspan=4, sticky='news')
+        self.display.grid(row=1, column=0, columnspan=4, sticky='news')
 
         ttk.Label(self, text="Function:").grid(row=2, column=0, sticky='news')
 
@@ -25,9 +26,9 @@ class CalculatorView(tk.Tk):
         self.keypad = self.make_keypad()
         self.operator_pad = self.make_operator_pad()
         self.command_pad = self.make_command_pad()
-        self.history = self.create_history()
+        self.history_label = self.create_history()
 
-        self.history.grid(row=0, column=0, columnspan=4, sticky='news')
+        self.history_label.grid(row=0, column=0, columnspan=4, sticky='news')
         self.keypad.grid(row=3, column=0, sticky='news')
         self.operator_pad.grid(row=3, column=1, sticky='news')
         self.command_pad.grid(row=3, column=2, sticky='news')
@@ -49,14 +50,9 @@ class CalculatorView(tk.Tk):
         # self.columnconfigure(2, weight=1)  # column 2 is the commands
 
     def create_history(self):
-        self.history_frame = tk.Frame(self)
-        label = tk.Label(self.history_frame, text="History", font=('Sarabun', 12))
-        label.pack()
-
-        self.history_text = tk.Text(self.history_frame, height=10, width=40, state='disabled', font=('Sarabun', 12))
-        self.history_text.pack()
-
-        return self.history_frame
+        self.history_label = ttk.Label(self, textvariable=self.history,
+                                       anchor='e')
+        return self.history_label
 
     def make_keypad(self):
         frame = tk.Frame(self)
@@ -166,6 +162,9 @@ class CalculatorView(tk.Tk):
         self.display.configure(state='disabled')
         self.change_text_colour('black')
         self.set_display_colour('lightblue')
+
+    def update_history(self, history):
+        self.history.set(f"{history[0]} = {history[1]}")
 
     def run(self):
         self.mainloop()
