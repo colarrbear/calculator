@@ -10,21 +10,16 @@ class CalculatorController:
 
     def handler_keypad_press(self, value):
         if value == '=':
-            # print('2')
-            # print(self.view.display.get(1.0, "end-1c"))
-            result = self.evaluate_expression(self.view.display.get(1.0, "end-1c"))
-            # print(result)
+            result = self.evaluate_expression(
+                self.view.display.get(1.0, "end-1c"))
             if result != "Error":
                 self.view.clear_display()
                 self.view.update_display(result)
                 history = self.model.get_history()[-1]
                 self.view.update_history(history)
-                # self.model.clear()
             else:
-                # foreground need to be fix
                 self.view.change_text_colour('red')
-                # self.view.set_display_colour("red")
-                self.view.bell()  # add sound
+                self.view.bell()
         elif value in ('(', ')'):
             self.handle_parentheses(value)
         elif value == 'mod':
@@ -37,12 +32,13 @@ class CalculatorController:
             self.handle_function(value)
         else:
             self.handle_digit_or_operator(value)
-            # self.view.update_display(self.model.current_expression)
 
     def handle_parentheses(self, value):
-        last_char = self.model.current_expression[-1] if self.model.current_expression else ''
+        last_char = self.model.current_expression[
+            -1] if self.model.current_expression else ''
         if value == '(':
-            if not self.model.current_expression or last_char in ('+', '-', '*', '/', '^', '('):
+            if not self.model.current_expression or last_char in (
+            '+', '-', '*', '/', '^', '('):
                 self.model.current_expression += '('
                 self.view.update_display(value)
             elif last_char.isdigit() or last_char == ')':
@@ -68,65 +64,30 @@ class CalculatorController:
 
     def evaluate_expression(self, txt):
         try:
-            # current = self.model.current_expression
-            result = eval(txt.replace('^', '**').replace('mod', '%').replace('ln','log'))
-            # print('result:', result)
+            result = eval(
+                txt.replace('^', '**').replace('mod', '%').replace('ln',
+                                                                   'log'))
             self.model.add_to_history(txt, result)
             return str(result)
         except ZeroDivisionError:
-            # make the display red
-            # print('Division by zero')
-            return "Error"
+            return "Error: Division by zero"
         except Exception as e:
-            # print(f'Error: {e}')
-            return "Error"
-
-    # def handle_function(self, value):
-    #     last_char = self.model.current_expression[-1] if self.model.current_expression else ''
-    #
-    #     if last_char.isdigit() or last_char == ')':
-    #         self.model.current_expression += '*' + value + '('
-    #     else:
-    #         self.model.current_expression += value + '('
-    #
-    #     self.view.update_display(value + '(')
-
-        # old
-        # if self.model.current_expression.endswith(('+', '-', '*', '/', '^')):
-        #     self.model.current_expression += value + '('
-        # elif self.model.current_expression:
-        #     self.model.current_expression += '*' + value + '('
-        # else:
-        #     self.model.current_expression += value + '('
-        # self.view.update_display(value + '(')
+            return f"Error: Invalid expression {e}"
 
     def handle_function(self, value):
-        last_char = self.model.current_expression[-1] if self.model.current_expression else ''
-        # print('last char:', last_char)
-        if last_char.isdigit() or last_char == ')':
-            # print(value)
-            if value == 'exp':
-                self.model.current_expression += '*' + 'math.exp' + '('
-            elif value == 'ln':
-                self.model.current_expression += 'math.log' + '('
-                # print('current expression:', self.model.current_expression)
-            elif value == 'log10':
-                self.model.current_expression += '*' + 'math.log10' + '('
-            elif value == 'log2':
-                self.model.current_expression += '*' + 'math.log2' + '('
-            # elif value == 'sqrt':
-            #     self.model.current_expression += '*' + 'math.sqrt' + '('
-        else:
-            if value == 'exp':
-                self.model.current_expression += 'math.exp' + '('
-            elif value == 'ln':
-                self.model.current_expression += 'math.log' + '('
-            elif value == 'log10':
-                self.model.current_expression += 'math.log10' + '('
-            elif value == 'log2':
-                self.model.current_expression += 'math.log2' + '('
-            elif value == 'sqrt':
-                self.model.current_expression += 'math.sqrt' + '('
+        last_char = self.model.current_expression[
+            -1] if self.model.current_expression else ''
+
+        if value == 'exp':
+            self.model.current_expression += 'math.exp' + '('
+        elif value == 'ln':
+            self.model.current_expression += 'math.log' + '('
+        elif value == 'log10':
+            self.model.current_expression += 'math.log10' + '('
+        elif value == 'log2':
+            self.model.current_expression += 'math.log2' + '('
+        elif value == 'sqrt':
+            self.model.current_expression += 'math.sqrt' + '('
 
         self.view.update_display(value + '(')
 

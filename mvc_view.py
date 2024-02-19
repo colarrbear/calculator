@@ -102,21 +102,26 @@ class CalculatorView(tk.Tk):
 
     def update_combobox_display(self, event):
         operator = self.combobox_function.get()
-        # print('op', operator)
         current_expression = self.display.get('1.0', tk.END).strip()
-
         if current_expression == "":
             self.display.insert(tk.END, f'{operator}(')
             self.update_display(f'{operator}(')
         else:
             last_char = current_expression[-1]
-            if last_char in self.controller.model.operator:
-                self.display.delete('1.0', tk.END)
-                self.display.insert(tk.END, f'{current_expression}{operator}(')
+            try:
+                int(current_expression)
+            except ValueError:
+                if last_char.isdigit() or last_char == ')':
+                    self.display.insert(tk.END, f'*{operator}(')
+                    self.update_display(f'*{operator}(')
+                else:
+                    self.display.insert(tk.END, f'{operator}(')
+                    self.update_display(f'{operator}(')
             else:
-                self.display.insert(tk.END, f'{operator}(')
+                self.display.insert(tk.END, f'*{operator}(')
+                self.update_display(f'*{operator}(')
 
-        self.combobox_function.set("")  # Reset the combobox selection
+        self.combobox_function.set("")
 
     def make_command_pad(self) -> tk.Frame:
         frame_commands = tk.Frame(self)
