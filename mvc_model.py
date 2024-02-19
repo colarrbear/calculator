@@ -19,7 +19,8 @@ class CalculatorModel:
 
     def evaluate_expression(self):
         try:
-            result = eval(self.current_expression.replace('^', '**'))
+            current = self.current_expression
+            result = eval(current.replace('^', '**'))
             self.stack.append((self.current_expression, result))
             return str(result)
         except ZeroDivisionError:

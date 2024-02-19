@@ -21,6 +21,8 @@ class CalculatorView(tk.Tk):
 
         self.combobox_function = self.make_combobox_function()
         self.combobox_function.grid(row=1, column=1, columnspan=3, sticky='news')
+        self.combobox_function.current(0)
+        self.combobox_function.bind("<<ComboboxSelected>>", self.update_combobox_display)
 
         self.keypad = self.make_keypad()
         self.operator_pad = self.make_operator_pad()
@@ -83,8 +85,50 @@ class CalculatorView(tk.Tk):
         return function
 
     def update_combobox_display(self, event):
-        selected_function = self.combobox_function.get()
-        self.controller.handler_keypad_press(selected_function)
+        operator = self.combobox_function.get()
+        print('op', operator)
+        current_expression = self.display.get('1.0', tk.END).strip()
+
+        if current_expression == "":
+            self.display.insert(tk.END, f'{operator}(')
+            self.update_display(f'{operator}(')
+        else:
+            last_char = current_expression[-1]
+            if last_char in self.controller.model.operators:
+                self.display.delete('1.0', tk.END)
+                self.display.insert(tk.END, f'{current_expression}{operator}(')
+            else:
+                self.display.insert(tk.END, f'{operator}(')
+
+        self.combobox_function.set("")  # Reset the combobox selection
+
+        # Set display color to default
+        # self.set_display_colour('lightblue')
+    # def update_combobox_display(self, event):
+    #     operator = self.combobox_function.get()
+    #     print('op', operator)
+    #     if self.display.get('1.0', tk.END) == "":
+    #         self.display.set(self.combobox_function.get() + '(')
+    #     else:
+    #         if self.display.get('1.0', tk.END)[-1:] in self.controller.model.operator:
+    #             self.display.set(self.combobox_function.get() + '(' + self.display.get('1.0', tk.END) + ')')
+    #         else:
+    #             self.display.set(self.combobox_function.get() + '(' + self.display.get('1.0', tk.END) + ')')
+        # old code
+        # operator = self.combo_value.get()
+        # print('op', operator)
+        # if self.text_result.get() == "":
+        #     self.text_result.set(self.combo_value.get() + '(')
+        # else:
+        #     if self.text_result.get()[-1:] in self.operator_list:
+        #         self.text_result.set(
+        #             self.text_result.get() + self.combo_value.get() + '(')
+        #     else:
+        #         self.text_result.set(
+        #             self.combo_value.get() + '(' + self.text_result.get() + ')')
+
+        # selected_function = self.combobox_function.get()
+        # self.controller.handler_keypad_press(selected_function)
 
     def make_command_pad(self) -> tk.Frame:
         frame_commands = tk.Frame(self)
@@ -117,6 +161,9 @@ class CalculatorView(tk.Tk):
 
     def set_display_colour(self, colour='lightblue'):
         self.display.configure(bg=colour)
+
+    def change_text_colour(self, colour='black'):
+        self.display.configure(fg=colour)
 
     def update_display(self, value):
         self.display.configure(state='normal')

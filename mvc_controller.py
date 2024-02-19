@@ -1,6 +1,6 @@
 from mvc_model import CalculatorModel
 from mvc_view import CalculatorView
-import math
+from math import *
 
 
 class CalculatorController:
@@ -11,14 +11,19 @@ class CalculatorController:
     def handler_keypad_press(self, value):
         # print('value:', value)
         if value == '=':
-            result = self.model.evaluate_expression()
+            print('2')
+            print(self.view.display.get(1.0, "end-1c"))
+            result = self.evaluate_expression(self.view.display.get(1.0, "end-1c"))
+            print(result)
             if result != "Error":
                 self.model.stack.append((self.model.current_expression, result))
                 self.view.clear_display()
                 self.view.update_display(result)
                 self.model.clear()
             else:
-                self.view.set_display_colour("red")
+                # foreground need to be fix
+                self.view.change_text_colour('red')
+                # self.view.set_display_colour("red")
                 self.view.bell()  # add sound
         elif value in ('(', ')'):
             self.handle_parentheses(value)
@@ -60,6 +65,22 @@ class CalculatorController:
     def handle_clear(self):
         self.model.clear_expression()
         self.view.clear_display()
+
+    def evaluate_expression(self, txt):
+        print('dooo')
+        try:
+            # current = self.model.current_expression
+            result = eval(txt.replace('^', '**').replace('mod', '%'))
+            print('result:', result)
+            self.model.stack.append((self.model.current_expression, result))
+            return str(result)
+        except ZeroDivisionError:
+            # make the display red
+            # print('Division by zero')
+            return "Error"
+        except Exception as e:
+            # print(f'Error: {e}')
+            return "Error"
 
     # def handle_function(self, value):
     #     last_char = self.model.current_expression[-1] if self.model.current_expression else ''
@@ -131,8 +152,8 @@ class CalculatorController:
                 self.view.update_display(value)
         else:
             if last_char.isdigit() or last_char == ')':
-                self.model.current_expression += '*' + value
-                self.view.update_display('*' + value)
+                self.model.current_expression += value
+                self.view.update_display(value)
 
     def run(self):
         self.view.mainloop()
