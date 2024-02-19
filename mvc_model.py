@@ -18,15 +18,29 @@ class CalculatorModel:
             self.stack.append(operator)
 
     def evaluate_expression(self):
-        if not self.stack:
-            print('No expression to evaluate')
-            raise ValueError
-        operand2 = float(self.stack.pop())
-        operator = self.stack.pop()
-        operand1 = float(self.stack.pop())
-        result = self.operators[operator](operand1, operand2)
-        self.stack.append(str(result))
-        return result
+        try:
+            result = eval(self.current_expression.replace('^', '**'))
+            self.stack.append((self.current_expression, result))
+            return str(result)
+        except ZeroDivisionError:
+            # make the display red
+            # print('Division by zero')
+            self.controller.error_response(str(e))
+            return "Error: Division by zero"
+        except Exception as e:
+            # print(f'Error: {e}')
+
+            return f"Error: {e}"
+
+        # if not self.stack:
+        #     print('No expression to evaluate')
+        #     raise ValueError
+        # operand2 = float(self.stack.pop())
+        # operator = self.stack.pop()
+        # operand1 = float(self.stack.pop())
+        # result = self.operators[operator](operand1, operand2)
+        # self.stack.append(str(result))
+        # return result
 
     def add(self, a, b):
         return a + b
@@ -56,6 +70,7 @@ class CalculatorModel:
             self.current_expression = "0"
         return self.current_expression
 
+
     # def clear_display(self):
     #     self.display.configure(state='normal')
     #     self.display.delete('1.0', tk.END)
@@ -63,4 +78,4 @@ class CalculatorModel:
     #     self.set_display_colour("black")
 
     def clear_expression(self):
-        self.expression = ""
+        self.current_expression = ""

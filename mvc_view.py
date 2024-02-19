@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from keypad import Keypad
+# from keypad import Keypad
 # from mvc_controller import CalculatorController
 
 
@@ -13,7 +13,7 @@ class CalculatorView(tk.Tk):
 
     def init_components(self):
         self.display = tk.Text(self, height=2, state='disabled',
-                               font=('Sarabun', 16), padx=12, pady=12)
+                               font=('Sarabun', 16), padx=12, pady=12, bg='lightblue')
         self.display.tag_configure("right", justify="right")
         self.display.grid(row=0, column=0, columnspan=4, sticky='news')
 
@@ -37,12 +37,24 @@ class CalculatorView(tk.Tk):
         self.columnconfigure(1, weight=1)  # column 1 is the operators
         self.columnconfigure(2, weight=1)  # column 2 is the commands
 
+    # def make_keypad(self):
+    #     # try command
+    #     frame = tk.Frame(self)
+    #     keys = list('789456123 0.')
+    #     for i, key in enumerate(keys):
+    #         button = Keypad(frame, keynames=[key], columns=3, command=lambda k=key: self.controller.handler_press(k))
+    #         button.grid(row=i // 3, column=i % 3, padx=2, pady=2, sticky='news')
+    #         frame.grid_columnconfigure(i % 3, weight=1)
+    #         frame.grid_rowconfigure(i // 3, weight=1)
+    #         button.grid(sticky='news')
+    #     return frame
+
     def make_keypad(self):
         frame = tk.Frame(self)
         keys = list('789456123 0.')
         for i, key in enumerate(keys):
             button = tk.Button(frame, text=key, command=lambda
-                k=key: self.controller.on_button_click(k))
+                k=key: self.controller.handler_press(k))
             button.grid(row=i // 3, column=i % 3, padx=2, pady=2,
                         sticky="nsew")
             frame.grid_columnconfigure(i % 3, weight=1)
@@ -62,7 +74,7 @@ class CalculatorView(tk.Tk):
             row = i % num_rows
             col = i // num_rows
 
-            button = tk.Button(frame_operators, text=key, command=lambda op=key: self.controller.on_button_click(op))
+            button = tk.Button(frame_operators, text=key, command=lambda op=key: self.controller.handler_press(op))
             button.grid(row=row, column=col, sticky='nsew', **options)
 
         frame_operators.grid(row=1, column=1, sticky='news')
@@ -88,12 +100,12 @@ class CalculatorView(tk.Tk):
 
         for i, key in enumerate(commands):
             row = i
-            col = 0  # Place command buttons in the first column
+            col = 0
 
             # button = Keypad(frame_commands, keynames=[key], columns=1)
             # button.grid(row=row, column=col, sticky='nsew', **options)
             button = tk.Button(frame_commands, text=key, command=lambda
-                cmd=key: self.controller.on_button_click(cmd))
+                cmd=key: self.controller.handler_press(cmd))
             button.grid(row=row, column=col, sticky='nsew', **options)
         frame_commands.grid(row=1, column=2, sticky='news')
 
@@ -110,14 +122,20 @@ class CalculatorView(tk.Tk):
         self.display.insert(tk.END, text, "right")
         self.display.configure(state='disabled')
 
-    def set_display_colour(self, colour):
+    def set_display_colour(self, colour='pink'):
         self.display.configure(bg=colour)
 
     def update_display(self, value):
         self.display.configure(state='normal')
         self.display.insert(tk.END, value, "right")
         self.display.configure(state='disabled')
-        # self.set_display_colour("black")
+
+    def clear_display(self):
+        self.display.configure(state='normal')
+        self.display.delete('1.0', tk.END)
+        self.display.configure(state='disabled')
+        # self.background = 'pink'
+        self.set_display_colour('lightblue')
 
     def run(self):
         self.mainloop()
