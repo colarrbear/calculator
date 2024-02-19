@@ -49,10 +49,9 @@ class CalculatorController:
             if result != "Error":
                 self.model.stack.append((self.model.current_expression, result))
             else:
-                # self.error_response()
-                error_response(self.view)
-                # self.view.set_display_colour("red")
-                # self.view.bell()  # add sound
+                # error_response(self.view)
+                self.view.set_display_colour("red")
+                self.view.bell()  # add sound
                 return
             self.view.clear_display()  # fix: Clear after successful evaluation
             self.view.update_display(result)
@@ -104,6 +103,6 @@ class CalculatorController:
         self.view.mainloop()
 
 
-def error_response(view):
-    view.set_display_colour("red")
-    view.bell()
+# def error_response(view):
+#     view.set_display_colour("red")
+#     view.bell()

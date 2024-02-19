@@ -122,7 +122,7 @@ class CalculatorView(tk.Tk):
         self.display.insert(tk.END, text, "right")
         self.display.configure(state='disabled')
 
-    def set_display_colour(self, colour='pink'):
+    def set_display_colour(self, colour='lightblue'):
         self.display.configure(bg=colour)
 
     def update_display(self, value):

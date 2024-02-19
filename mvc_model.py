@@ -25,12 +25,10 @@ class CalculatorModel:
         except ZeroDivisionError:
             # make the display red
             # print('Division by zero')
-            self.controller.error_response(str(e))
-            return "Error: Division by zero"
+            return "Error"
         except Exception as e:
             # print(f'Error: {e}')
-
-            return f"Error: {e}"
+            return "Error"
 
         # if not self.stack:
         #     print('No expression to evaluate')
