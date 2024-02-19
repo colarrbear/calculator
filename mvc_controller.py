@@ -61,65 +61,28 @@ class CalculatorController:
 
     def evaluate_expression(self, txt):
         try:
-            # current = self.model.current_expression
             result = eval(txt.replace('^', '**').replace('mod', '%').replace('ln','log'))
-            # print('result:', result)
             self.model.add_to_history(txt, result)
             return str(result)
         except ZeroDivisionError:
-            # make the display red
-            # print('Division by zero')
             return "Error"
         except Exception as e:
-            # print(f'Error: {e}')
             return "Error"
 
-    # def handle_function(self, value):
-    #     last_char = self.model.current_expression[-1] if self.model.current_expression else ''
-    #
-    #     if last_char.isdigit() or last_char == ')':
-    #         self.model.current_expression += '*' + value + '('
-    #     else:
-    #         self.model.current_expression += value + '('
-    #
-    #     self.view.update_display(value + '(')
-
-        # old
-        # if self.model.current_expression.endswith(('+', '-', '*', '/', '^')):
-        #     self.model.current_expression += value + '('
-        # elif self.model.current_expression:
-        #     self.model.current_expression += '*' + value + '('
-        # else:
-        #     self.model.current_expression += value + '('
-        # self.view.update_display(value + '(')
-
     def handle_function(self, value):
-        last_char = self.model.current_expression[-1] if self.model.current_expression else ''
-        # print('last char:', last_char)
-        if last_char.isdigit() or last_char == ')':
-            # print(value)
-            if value == 'exp':
-                self.model.current_expression += '*' + 'math.exp' + '('
-            elif value == 'ln':
-                self.model.current_expression += 'math.log' + '('
-                # print('current expression:', self.model.current_expression)
-            elif value == 'log10':
-                self.model.current_expression += '*' + 'math.log10' + '('
-            elif value == 'log2':
-                self.model.current_expression += '*' + 'math.log2' + '('
-            # elif value == 'sqrt':
-            #     self.model.current_expression += '*' + 'math.sqrt' + '('
-        else:
-            if value == 'exp':
-                self.model.current_expression += 'math.exp' + '('
-            elif value == 'ln':
-                self.model.current_expression += 'math.log' + '('
-            elif value == 'log10':
-                self.model.current_expression += 'math.log10' + '('
-            elif value == 'log2':
-                self.model.current_expression += 'math.log2' + '('
-            elif value == 'sqrt':
-                self.model.current_expression += 'math.sqrt' + '('
+        last_char = self.model.current_expression[
+            -1] if self.model.current_expression else ''
+
+        if value == 'exp':
+            self.model.current_expression += 'math.exp' + '('
+        elif value == 'ln':
+            self.model.current_expression += 'math.log' + '('
+        elif value == 'log10':
+            self.model.current_expression += 'math.log10' + '('
+        elif value == 'log2':
+            self.model.current_expression += 'math.log2' + '('
+        elif value == 'sqrt':
+            self.model.current_expression += 'math.sqrt' + '('
 
         self.view.update_display(value + '(')
 
@@ -146,6 +109,11 @@ class CalculatorController:
             if last_char.isdigit() or last_char == ')':
                 self.model.current_expression += value
                 self.view.update_display(value)
+
+    def recall_handler(self, event):
+        self.view.clear_display()
+        last_expression = self.model.get_history()[-1][0]
+        self.view.update_display(last_expression)
 
     def run(self):
         self.view.mainloop()

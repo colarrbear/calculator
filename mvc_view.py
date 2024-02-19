@@ -246,6 +246,3 @@ class CalculatorView(tk.Tk):
             selected_entry = self.history_listbox.get(selected_index[0])
             self.controller.recall_handler(selected_entry)
 
-    def run(self):
-        """Run the app."""
-        self.mainloop()
