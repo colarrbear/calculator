@@ -1,3 +1,6 @@
+"""calculator model"""
+
+
 class CalculatorModel:
     def __init__(self):
         self.current_expression = ""
@@ -7,9 +10,8 @@ class CalculatorModel:
     def get_history(self):
         return self.stack
 
-    def add_to_history(self, expression, result):
+    def add_to_history(self, expression: str, result: str):
         self.stack.append((expression, result))
-        print(self.stack)
 
     def clear(self):
         self.current_expression = ""

@@ -1,3 +1,4 @@
+"""main"""
 from mvc_controller import CalculatorController
 
 if __name__ == '__main__':

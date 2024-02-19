@@ -8,7 +8,7 @@ class CalculatorController:
         self.model = CalculatorModel()
         self.view = CalculatorView(self)
 
-    def handler_keypad_press(self, value):
+    def handler_keypad_press(self, value: str):
         if value == '=':
             result = self.evaluate_expression(
                 self.view.display.get(1.0, "end-1c"))
@@ -33,12 +33,12 @@ class CalculatorController:
         else:
             self.handle_digit_or_operator(value)
 
-    def handle_parentheses(self, value):
+    def handle_parentheses(self, value: str):
         last_char = self.model.current_expression[
             -1] if self.model.current_expression else ''
         if value == '(':
             if not self.model.current_expression or last_char in (
-            '+', '-', '*', '/', '^', '('):
+                    '+', '-', '*', '/', '^', '('):
                 self.model.current_expression += '('
                 self.view.update_display(value)
             elif last_char.isdigit() or last_char == ')':
@@ -62,11 +62,12 @@ class CalculatorController:
         self.model.clear_expression()
         self.view.clear_display()
 
-    def evaluate_expression(self, txt):
+    def evaluate_expression(self, txt: str):
         try:
             result = eval(
-                txt.replace('^', '**').replace('mod', '%').replace('ln',
-                                                                   'log'))
+                txt.replace('^', '**').
+                replace('mod', '%').
+                replace('ln', 'log'))
             self.model.add_to_history(txt, result)
             return str(result)
         except ZeroDivisionError:
@@ -74,7 +75,7 @@ class CalculatorController:
         except Exception as e:
             return f"Error: Invalid expression {e}"
 
-    def handle_function(self, value):
+    def handle_function(self, value: str):
         last_char = self.model.current_expression[
             -1] if self.model.current_expression else ''
 
@@ -91,7 +92,7 @@ class CalculatorController:
 
         self.view.update_display(value + '(')
 
-    def handle_digit_or_operator(self, value):
+    def handle_digit_or_operator(self, value: str):
         last_char = self.model.current_expression[
             -1] if self.model.current_expression else ''
         if value.isdigit():

@@ -1,15 +1,8 @@
+"""keypad.py - A custom widget for a calculator keypad."""
 import tkinter as tk
 
 
 class Keypad(tk.Frame):
-    # try command
-    # def __init__(self, parent,keynames=[], columns=1, commmand=None, **kwargs):
-    #     super().__init__(parent, **kwargs)
-    #     # self.keynames = keynames # st code
-    #     self.keynames = keynames if keynames else list('789456123 0.')
-    #     self.columns = columns
-    #     self.command = commmand
-    #     self.init_components(columns)  # st code
 
     def __init__(self, parent,keynames=[], columns=1, **kwargs):
         super().__init__(parent, **kwargs)
@@ -26,11 +19,6 @@ class Keypad(tk.Frame):
         :param columns: number of columns to use
         """
         options = {'sticky': 'news', 'padx': 1, 'pady': 1}
-
-        # try command
-        # for i, key in enumerate(self.keynames):
-        #     button = tk.Button(self, text=key, command=lambda k=key: self.command(k) if self.command else None)
-        #     button.grid(row=i // columns, column=i % columns, **options)
 
         for i, key in enumerate(self.keynames):
                     button = tk.Button(self, text=key)

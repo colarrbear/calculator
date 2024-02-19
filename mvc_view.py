@@ -12,16 +12,19 @@ class CalculatorView(tk.Tk):
 
     def init_components(self):
         self.display = tk.Text(self, height=2, state='disabled',
-                               font=('Sarabun', 16), padx=12, pady=12, bg='lightblue')
+                               font=('Sarabun', 16), padx=12, pady=12,
+                               bg='lightblue')
         self.display.tag_configure("right", justify="right")
         self.display.grid(row=1, column=0, columnspan=4, sticky='news')
 
         ttk.Label(self, text="Function:").grid(row=2, column=0, sticky='news')
 
         self.combobox_function = self.make_combobox_function()
-        self.combobox_function.grid(row=2, column=2, columnspan=1, sticky='news')
+        self.combobox_function.grid(row=2, column=2, columnspan=1,
+                                    sticky='news')
         self.combobox_function.current(0)
-        self.combobox_function.bind("<<ComboboxSelected>>", self.update_combobox_display)
+        self.combobox_function.bind("<<ComboboxSelected>>",
+                                    self.update_combobox_display)
 
         self.keypad = self.make_keypad()
         self.operator_pad = self.make_operator_pad()
@@ -33,21 +36,17 @@ class CalculatorView(tk.Tk):
         self.operator_pad.grid(row=3, column=1, sticky='news')
         self.command_pad.grid(row=3, column=2, sticky='news')
 
-        self.rowconfigure(0, weight=1)  # row 0 is the display
-        self.rowconfigure(1, weight=1)  # row 1 is the combobox and label, no need to resize
-        self.rowconfigure(2, weight=1)  # row 2 is the history, no need to resize
-        self.rowconfigure(3, weight=1)  # row 3 is the keypad, operators, and commands
-
-        self.columnconfigure(0, weight=1)  # column 0 is the keypad and combobox
-        self.columnconfigure(1, weight=1)  # column 1 is the operators
-        # self.columnconfigure(2, weight=1)  # column 2 is the commands
-        self.rowconfigure(0, weight=1)  # row 0 is the display
-        self.rowconfigure(1, weight=1)  # row 1 is the keypad, operators, and commands
+        self.rowconfigure(0, weight=1)
+        self.rowconfigure(1, weight=1)
         self.rowconfigure(2, weight=1)
-        #
-        # self.columnconfigure(0, weight=1)  # column 0 is the keypad and combobox
-        # self.columnconfigure(1, weight=1)  # column 1 is the operators
-        # self.columnconfigure(2, weight=1)  # column 2 is the commands
+        self.rowconfigure(3, weight=1)
+
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(1, weight=1)
+
+        self.rowconfigure(0, weight=1)
+        self.rowconfigure(1, weight=1)
+        self.rowconfigure(2, weight=1)
 
     def create_history(self):
         self.history_label = ttk.Label(self, textvariable=self.history,
@@ -65,7 +64,6 @@ class CalculatorView(tk.Tk):
 
             frame.grid_columnconfigure(i % 3, weight=1)
             frame.grid_rowconfigure(i // 3, weight=1)
-            # button.grid(sticky="nsew")
         return frame
 
     def make_operator_pad(self) -> tk.Frame:
@@ -80,7 +78,8 @@ class CalculatorView(tk.Tk):
             row = i % num_rows
             col = i // num_rows
 
-            button = tk.Button(frame_operators, text=key, command=lambda op=key: self.controller.handler_keypad_press(op))
+            button = tk.Button(frame_operators, text=key, command=lambda
+                op=key: self.controller.handler_keypad_press(op))
             button.grid(row=row, column=col, sticky='nsew', **options)
 
         frame_operators.grid(row=2, column=1, sticky='news')
@@ -96,7 +95,8 @@ class CalculatorView(tk.Tk):
     def make_combobox_function(self):
         function_var = tk.StringVar()
         function = ttk.Combobox(self, textvariable=function_var)
-        function['values'] = ('exp', 'ln', 'log10', 'log2', 'sqrt', 'sin', 'cos', 'tan')
+        function['values'] = (
+            'exp', 'ln', 'log10', 'log2', 'sqrt', 'sin', 'cos', 'tan')
         function.bind("<<ComboboxSelected>>", self.update_combobox_display)
         return function
 
@@ -144,32 +144,31 @@ class CalculatorView(tk.Tk):
 
         return frame_commands
 
-    def display_text(self, text):
-        self.display.configure(state='normal')
-        self.display.delete('1.0', tk.END)
-        self.display.insert(tk.END, text, "right")
-        self.display.configure(state='disabled')
-
     def set_display_colour(self, colour='lightblue'):
         self.display.configure(bg=colour)
 
     def change_text_colour(self, colour='black'):
+        """Change the text colour of the display."""
         self.display.configure(fg=colour)
 
-    def update_display(self, value):
+    def update_display(self, value: str):
+        """Update the display with the given value."""
         self.display.configure(state='normal')
         self.display.insert(tk.END, value, "right")
         self.display.configure(state='disabled')
 
     def clear_display(self):
+        """Clear the display."""
         self.display.configure(state='normal')
         self.display.delete('1.0', tk.END)
         self.display.configure(state='disabled')
         self.change_text_colour('black')
         self.set_display_colour('lightblue')
 
-    def update_history(self, history):
+    def update_history(self, history: tuple):
+        """Update the history label."""
         self.history.set(f"{history[0]} = {history[1]}")
 
     def run(self):
+        """Run the app."""
         self.mainloop()
