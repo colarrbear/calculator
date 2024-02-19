@@ -220,17 +220,8 @@ class CalculatorView(tk.Tk):
         self.change_text_colour('black')
         self.set_display_colour('lightblue')
 
-    # def update_history(self, history: tuple):
-    def update_history(self, history):
+    def update_history(self, history: tuple):
         """Update the history label."""
-        # old code
-        # self.history.set(f"{history[0]} = {history[1]}")
-        # 1
-        # self.history_listbox.insert(tk.END, history)
-        # 2
-        # self.history_listbox.insert(tk.END, f"{history[0]} = {history[1]}")
-        # self.history_listbox.selection_clear(0, tk.END)
-        # 3
         equation = f"{history[0]} ="
         answer = history[1]
 
@@ -239,10 +230,9 @@ class CalculatorView(tk.Tk):
 
         self.history_listbox.selection_clear(0, tk.END)
 
-    # new func
     def recall_history_entry(self, event):
         selected_index = self.history_listbox.curselection()
         if selected_index:
             selected_entry = self.history_listbox.get(selected_index[0])
-            self.controller.recall_handler(selected_entry)
-
+            self.controller.view.clear_display()
+            self.controller.view.update_display(selected_entry)

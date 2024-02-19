@@ -111,9 +111,14 @@ class CalculatorController:
                 self.view.update_display(value)
 
     def recall_handler(self, event):
-        self.view.clear_display()
-        last_expression = self.model.get_history()[-1][0]
-        self.view.update_display(last_expression)
+        # self.view.clear_display()
+        # last_expression = self.model.get_history()[-1][0]
+        # self.view.update_display(last_expression)
+        if self.model.get_history():
+            self.view.clear_display()
+            last_expression = self.model.get_history()[-1][0]
+            self.view.update_display(last_expression)
+
 
     def run(self):
         self.view.mainloop()
