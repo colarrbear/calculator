@@ -13,29 +13,50 @@ class CalculatorView(tk.Tk):
         self.display = tk.Text(self, height=2, state='disabled',
                                font=('Sarabun', 16), padx=12, pady=12, bg='lightblue')
         self.display.tag_configure("right", justify="right")
-        self.display.grid(row=0, column=0, columnspan=4, sticky='news')
+        self.display.grid(row=1, column=1, columnspan=4, sticky='news')
 
-        ttk.Label(self, text="Function:").grid(row=1, column=0, sticky='w')
+        ttk.Label(self, text="Function:").grid(row=2, column=0, sticky='news')
 
         self.combobox_function = self.make_combobox_function()
-        self.combobox_function.grid(row=1, column=1, columnspan=3, sticky='news')
+        self.combobox_function.grid(row=2, column=2, columnspan=1, sticky='news')
         self.combobox_function.current(0)
         self.combobox_function.bind("<<ComboboxSelected>>", self.update_combobox_display)
 
         self.keypad = self.make_keypad()
         self.operator_pad = self.make_operator_pad()
         self.command_pad = self.make_command_pad()
+        self.history = self.create_history()
 
-        self.keypad.grid(row=2, column=0, sticky='news')
-        self.operator_pad.grid(row=2, column=1, sticky='news')
-        self.command_pad.grid(row=2, column=2, sticky='news')
+        self.history.grid(row=0, column=0, columnspan=4, sticky='news')
+        self.keypad.grid(row=3, column=0, sticky='news')
+        self.operator_pad.grid(row=3, column=1, sticky='news')
+        self.command_pad.grid(row=3, column=2, sticky='news')
 
         self.rowconfigure(0, weight=1)  # row 0 is the display
-        self.rowconfigure(1, weight=1)  # row 1 is the keypad, operators, and commands
+        self.rowconfigure(1, weight=1)  # row 1 is the combobox and label, no need to resize
+        self.rowconfigure(2, weight=1)  # row 2 is the history, no need to resize
+        self.rowconfigure(3, weight=1)  # row 3 is the keypad, operators, and commands
 
         self.columnconfigure(0, weight=1)  # column 0 is the keypad and combobox
         self.columnconfigure(1, weight=1)  # column 1 is the operators
-        self.columnconfigure(2, weight=1)  # column 2 is the commands
+        # self.columnconfigure(2, weight=1)  # column 2 is the commands
+        self.rowconfigure(0, weight=1)  # row 0 is the display
+        self.rowconfigure(1, weight=1)  # row 1 is the keypad, operators, and commands
+        self.rowconfigure(2, weight=1)
+        #
+        # self.columnconfigure(0, weight=1)  # column 0 is the keypad and combobox
+        # self.columnconfigure(1, weight=1)  # column 1 is the operators
+        # self.columnconfigure(2, weight=1)  # column 2 is the commands
+
+    def create_history(self):
+        self.history_frame = tk.Frame(self)
+        label = tk.Label(self.history_frame, text="History", font=('Sarabun', 12))
+        label.pack()
+
+        self.history_text = tk.Text(self.history_frame, height=10, width=40, state='disabled', font=('Sarabun', 12))
+        self.history_text.pack()
+
+        return self.history_frame
 
     def make_keypad(self):
         frame = tk.Frame(self)
@@ -45,9 +66,10 @@ class CalculatorView(tk.Tk):
                 k=key: self.controller.handler_keypad_press(k))
             button.grid(row=i // 3, column=i % 3, padx=2, pady=2,
                         sticky="nsew")
+
             frame.grid_columnconfigure(i % 3, weight=1)
             frame.grid_rowconfigure(i // 3, weight=1)
-            button.grid(sticky="nsew")
+            # button.grid(sticky="nsew")
         return frame
 
     def make_operator_pad(self) -> tk.Frame:
@@ -65,7 +87,7 @@ class CalculatorView(tk.Tk):
             button = tk.Button(frame_operators, text=key, command=lambda op=key: self.controller.handler_keypad_press(op))
             button.grid(row=row, column=col, sticky='nsew', **options)
 
-        frame_operators.grid(row=1, column=1, sticky='news')
+        frame_operators.grid(row=2, column=1, sticky='news')
 
         for row in range(num_rows):
             frame_operators.rowconfigure(row, weight=1)
@@ -92,7 +114,7 @@ class CalculatorView(tk.Tk):
             self.update_display(f'{operator}(')
         else:
             last_char = current_expression[-1]
-            if last_char in self.controller.model.operators:
+            if last_char in self.controller.model.operator:
                 self.display.delete('1.0', tk.END)
                 self.display.insert(tk.END, f'{current_expression}{operator}(')
             else:

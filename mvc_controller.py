@@ -15,10 +15,15 @@ class CalculatorController:
             result = self.evaluate_expression(self.view.display.get(1.0, "end-1c"))
             # print(result)
             if result != "Error":
-                self.model.stack.append((self.model.current_expression, result))
+                # self.model.stack.append((self.model.current_expression, result))
+                # self.model.add_to_history('', '')
                 self.view.clear_display()
+                # print('value:', value)
+                # self.model.add_to_history(self.model.current_expression, result)
                 self.view.update_display(result)
+
                 self.model.clear()
+                # self.model.add_to_history(self.model.current_expression, value)
             else:
                 # foreground need to be fix
                 self.view.change_text_colour('red')
@@ -70,7 +75,7 @@ class CalculatorController:
             # current = self.model.current_expression
             result = eval(txt.replace('^', '**').replace('mod', '%').replace('ln','log'))
             # print('result:', result)
-            self.model.stack.append((self.model.current_expression, result))
+            self.model.add_to_history(txt, result)
             return str(result)
         except ZeroDivisionError:
             # make the display red
